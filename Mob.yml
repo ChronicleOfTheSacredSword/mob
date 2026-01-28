@@ -1,0 +1,66 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Mob Service
+servers:
+  - url: http://localhost:8080
+paths:
+  /mob:
+    get:
+      summary: Get all mobs
+      operationId: getAllMobs
+      tags:
+        - mob
+      responses:
+        '200':
+          description: All mobs were fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Mob"
+  /mob/{id}:
+    get:
+      summary: Get a mob from its id
+      operationId: getMob
+      tags:
+        - mob
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Mob id
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Mob was found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mob"
+components:
+  schemas:
+    Mob:
+      required:
+        - id_mob
+        - name
+        - pv
+        - atk
+        - drops
+      properties:
+        id_mob:
+          type: number
+        name:
+          type: string
+        pv:
+          type: number
+        atk:
+          type: number
+        drops:
+          type: array
+          items:
+            type: number
+
+
