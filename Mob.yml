@@ -7,13 +7,13 @@ servers:
 paths:
   /mob:
     get:
-      summary: Get all mobs
-      operationId: getAllMobs
+      summary: Récupérer tous les monstres
+      operationId: rechercheMonstres
       tags:
-        - mob
+        - Mob
       responses:
         '200':
-          description: All mobs were fetched
+          description: Tous les monstres ont été récupérés
           content:
             application/json:
               schema:
@@ -22,20 +22,20 @@ paths:
                   $ref: "#/components/schemas/Mob"
   /mob/{id}:
     get:
-      summary: Get a mob from its id
-      operationId: getMob
+      summary: Récupérer un monstre grâce à son id
+      operationId: rechercheMonstre
       tags:
-        - mob
+        - Mob
       parameters:
         - name: id
           in: path
           required: true
-          description: Mob id
+          description: Id du monstre recherché
           schema:
             type: number
       responses:
         '200':
-          description: Mob was found
+          description: Le monstre a bien été récupéré
           content:
             application/json:
               schema:
@@ -62,5 +62,3 @@ components:
           type: array
           items:
             type: number
-
-
