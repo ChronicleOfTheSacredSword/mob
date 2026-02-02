@@ -5,7 +5,7 @@ import {Mob} from "../models/Mob";
 export class MobService implements MobServicePort {
     constructor(private readonly repo: MobRepositoryPort) {}
 
-    getAllMobs(): Promise<Mob[] | null>{
+    getAllMobs(): Promise<Mob[]>{
         return this.repo.getAllMobs();
     }
 
@@ -16,9 +16,9 @@ export class MobService implements MobServicePort {
         return this.repo.getMobById(id);
     }
 
-    insertMob(mob: Mob):  Promise<Mob | null>{
-        if(mob === undefined) {
-            throw new Error("A mob must be provided");
+    insertMob(mob: Omit<Mob, 'id'>):  Promise<Mob | null>{
+        if(mob.name === undefined || mob.pv === undefined || mob.atk === undefined || mob.drops === undefined) {
+            throw new Error("A mob (name, pv, atk and drops) must be provided");
         }
         return this.repo.insertMob(mob);
     }

@@ -13,11 +13,11 @@ export class MobController {
   }
 
   async getAllMobs(req: Request, res: Response) {
-    const mobs: Mob[] | null = await this.mobService.getAllMobs();
-    if (mobs) {
+    const mobs: Mob[] = await this.mobService.getAllMobs();
+    if (mobs && mobs.length > 0) {
       res.status(200).send(mobs);
     } else {
-      res.status(404).send({ message: `No mobs not found` });
+      res.status(404).send({ message: `No mobs were found` });
     }
   }
 
