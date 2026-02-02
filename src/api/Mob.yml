@@ -1,0 +1,102 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Mob Service
+servers:
+  - url: http://localhost:8080
+paths:
+  /mob:
+    get:
+      summary: Récupérer tous les monstres
+      operationId: rechercheMonstres
+      tags:
+        - Mob
+      responses:
+        '200':
+          description: Tous les monstres ont été récupérés
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                items:
+                  $ref: "#/components/schemas/Mob"
+    post:
+      summary: Ajouter un nouveau monstre
+      operationId: insertMob
+      tags:
+        - Mob
+      responses:
+        '201':
+          description: Le monstre a bien été ajouté
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mob"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Mob"
+        description: Monstre à ajouter
+  /mob/{id}:
+    get:
+      summary: Récupérer un monstre grâce à son id
+      operationId: rechercheMonstre
+      tags:
+        - Mob
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id du monstre recherché
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Le monstre a bien été récupéré
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mob"
+    delete:
+      summary: Supprimer un monstre
+      operationId: deleteMob
+      tags:
+        - Mob
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: L'id du monstre à supprimer
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Le monstre a été supprimé
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mob"
+components:
+  schemas:
+    Mob:
+      required:
+        - id_mob
+        - name
+        - pv
+        - atk
+        - drops
+      properties:
+        id_mob:
+          type: number
+        name:
+          type: string
+        pv:
+          type: number
+        atk:
+          type: number
+        drops:
+          type: array
+          items:
+            type: number
