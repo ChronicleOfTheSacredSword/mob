@@ -10,8 +10,11 @@ import {MobService} from "../domain/services/MobService";
 import {MobController} from "../presentation/controllers/MobController";
 
 
+const cors = require('cors');
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: 'http://localhost:9000' }));
+
 
 
 const file  = fs.readFileSync(require.resolve('../api/Mob.yml'), 'utf8')
