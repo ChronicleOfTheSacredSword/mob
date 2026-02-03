@@ -1,0 +1,48 @@
+meta {
+  name: Récupérer tous les monstres
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/mob
+  body: none
+  auth: inherit
+}
+
+example {
+  name: 200 Response
+  description: Tous les monstres ont été récupérés
+  
+  request: {
+    url: {{baseUrl}}/mob
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        [
+          {
+            "id_mob": 0,
+            "name": "",
+            "pv": 0,
+            "atk": 0,
+            "drops": []
+          }
+        ]
+      '''
+    }
+  }
+}

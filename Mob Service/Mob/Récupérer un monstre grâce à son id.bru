@@ -1,0 +1,53 @@
+meta {
+  name: Récupérer un monstre grâce à son id
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/mob/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+example {
+  name: 200 Response
+  description: Le monstre a bien été récupéré
+  
+  request: {
+    url: {{baseUrl}}/mob/:id
+    method: GET
+    mode: none
+    params:path: {
+      id: 
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id_mob": 0,
+          "name": "",
+          "pv": 0,
+          "atk": 0,
+          "drops": []
+        }
+      '''
+    }
+  }
+}

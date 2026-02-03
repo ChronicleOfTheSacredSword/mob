@@ -1,0 +1,53 @@
+meta {
+  name: Supprimer un monstre
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/mob/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+example {
+  name: 200 Response
+  description: Le monstre a été supprimé
+  
+  request: {
+    url: {{baseUrl}}/mob/:id
+    method: DELETE
+    mode: none
+    params:path: {
+      id: 
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id_mob": 0,
+          "name": "",
+          "pv": 0,
+          "atk": 0,
+          "drops": []
+        }
+      '''
+    }
+  }
+}

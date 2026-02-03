@@ -61,5 +61,24 @@ describe('MobService', () => {
         expect(() => mobService.insertMob(newMob)).toThrow(Error)
         expect(() => mobService.insertMob(newMob)).toThrow("A mob (name, pv, atk and drops) must be provided");
     });
+
+    it('should fail to insert a new tree because of the lack of data', () => {
+        // Arrange
+        const newMob: any ={ name: "Test mob", pv: 200, drops: [0, 1] }
+
+        const repoMock = {
+            getAllMobs: jest.fn(),
+            getMobById: jest.fn(),
+            insertMob: jest.fn().mockImplementation(() => {
+                new Error("A mob (name, pv, atk and drops) must be provided");
+            }),
+            deleteMob: jest.fn()
+        };
+        const mobService = new MobService(repoMock);
+
+        // Assert
+        expect(() => mobService.insertMob(newMob)).toThrow(Error)
+        expect(() => mobService.insertMob(newMob)).toThrow("A mob (name, pv, atk and drops) must be provided");
+    });
 });
 

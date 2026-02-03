@@ -1,0 +1,64 @@
+meta {
+  name: Ajouter un nouveau monstre
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/mob
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Skinwalker",
+    "pv": 200,
+    "atk": 20,
+    "drops": [0, 1]
+  }
+}
+
+example {
+  name: 201 Response
+  description: Le monstre a bien été ajouté
+  
+  request: {
+    url: {{baseUrl}}/mob
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "id_mob": 0,
+        "name": "",
+        "pv": 0,
+        "atk": 0,
+        "drops": []
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 201
+      text: Created
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id_mob": 0,
+          "name": "",
+          "pv": 0,
+          "atk": 0,
+          "drops": []
+        }
+      '''
+    }
+  }
+}
