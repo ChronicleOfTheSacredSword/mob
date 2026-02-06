@@ -4,21 +4,16 @@ import redis from "../../../db";
 
 class MobRepo implements MobRepositoryPort {
     async getMobIds(): Promise<number[]> {
-        const mobIds = await redis.get("mobs");
-        if(!mobIds)
-            return [];
-        return mobIds.split(";").filter((item)=>{return item!==''}).map((item)=>{return Number.parseInt(item);});
+        const mobIds = await redis.smembers("mobs");
+        return mobIds.map(id => parseInt(id, 10));
     }
 
     async getAllMobs():  Promise<Mob[]>{
         const mobIds:number[]  = await this.getMobIds();
-        let mobs: any = [];
-        for (const id of mobIds) {
-            await this.getMobById(id).then((mob: any) => {
-                mobs.push(mob);
-            })
-        }
-        return mobs;
+        if (mobIds.length === 0) return [];
+        const mobPromises = mobIds.map(id => this.getMobById(id));
+        const mobs = await Promise.all(mobPromises);
+        return mobs.filter((mob): mob is Mob => mob !== null);
     }
 
     async getMobById(id: number):  Promise<Mob | null>{
@@ -33,9 +28,9 @@ class MobRepo implements MobRepositoryPort {
     async insertMob(mob: Omit<Mob, 'id'>):  Promise<Mob | null>{
         try{
             const mobIds:number[] = await this.getMobIds()
-            let newId = mobIds.length > 0 ?(Math.max(...mobIds)+1): 0;
-            mobIds.push(newId);
-            await redis.set("mobs", mobIds.join(";"));
+            let newId = mobIds.length > 0 ?(Math.max(...mobIds)+1): 1;
+            await redis.sadd("mobs", newId.toString());
+
             let newMob = {id: newId, name: mob.name, pv: mob.pv, atk: mob.atk, drops: mob.drops}
             await redis.set(`${newMob.id}`, JSON.stringify(mob));
             return newMob;
@@ -47,12 +42,7 @@ class MobRepo implements MobRepositoryPort {
 
     async deleteMob(id: number): Promise<number | null>{
         try{
-            const mobIds:number[] = await this.getMobIds()
-            const index = mobIds.indexOf(id);
-            if (index > -1) {
-                mobIds.splice(index, 1);
-            }
-            await redis.set("mobs", mobIds.join(";"));
+            await redis.srem("mobs", id.toString());
             await redis.del(`${id}`);
             return id;
         }catch (e){
